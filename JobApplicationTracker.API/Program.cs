@@ -1,5 +1,8 @@
 
+using JobApplicationTracker.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using JobApplicationTracker.API.Infrastructure.Extentions;
+using JobApplicationTracker.Services.Interfaces;
 
 namespace JobApplicationTracker.API
 {
@@ -17,6 +20,9 @@ namespace JobApplicationTracker.API
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
+
+            builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
+            builder.Services.RegisterUserDefinedServices(typeof(IJobsService).Assembly);
 
             var app = builder.Build();
 
