@@ -1,4 +1,6 @@
 
+using Microsoft.EntityFrameworkCore;
+
 namespace JobApplicationTracker.API
 {
     public class Program
@@ -8,6 +10,9 @@ namespace JobApplicationTracker.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            builder.Services.AddDbContext<JobApplicationTracker.Data.Data.JobApplicationTrackerDbContext>(options =>
+                options.UseSqlServer(connectionString));
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

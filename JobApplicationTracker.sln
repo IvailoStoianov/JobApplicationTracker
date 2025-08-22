@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36414.22 d17.14
+VisualStudioVersion = 17.14.36414.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
@@ -23,8 +23,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobApplicationTracker.API.M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobApplicationTracker.Common", "JobApplicationTracker.Common\JobApplicationTracker.Common.csproj", "{939EFA45-3A34-4734-A28C-37229EEA1BAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobApplicationTracker.Data", "JobApplicationTracker.Data.EF\JobApplicationTracker.Data.csproj", "{5FFE169A-C3EF-4CC7-ADC8-068F84298897}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobApplicationTracker.Data.Models", "JobApplicationTracker.Data.Models\JobApplicationTracker.Data.Models.csproj", "{54C592D1-D2DF-415B-9BF1-36A54095BFF4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobApplicationTracker.Services", "JobApplicationTracker.Services\JobApplicationTracker.Services.csproj", "{66BFB2FE-F34E-479B-A7F1-A0FC399EDE46}"
@@ -35,26 +33,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobApplicationTracker.Tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobApplicationTracker.Tests.UI", "JobApplicationTracker.Tests.UI\JobApplicationTracker.Tests.UI.csproj", "{F0A6CE59-4AA1-4187-85FE-4BB8FE0FEA88}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "jobapplicationtracker-client-web", "jobapplicationtracker-client-web\", "{8D24E6DA-D5B9-5DAF-90D7-CC921AB502AB}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_54070"
-		Debug.AspNetCompiler.PhysicalPath = "jobapplicationtracker-client-web\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_54070\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_54070"
-		Release.AspNetCompiler.PhysicalPath = "jobapplicationtracker-client-web\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_54070\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "54070"
-		SlnRelativePath = "jobapplicationtracker-client-web\"
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobApplicationTracker.Data", "JobApplicationTracker.Data\JobApplicationTracker.Data.csproj", "{5C642145-EF1D-F62E-67B5-6CD61D70F22A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,10 +57,6 @@ Global
 		{939EFA45-3A34-4734-A28C-37229EEA1BAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{939EFA45-3A34-4734-A28C-37229EEA1BAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{939EFA45-3A34-4734-A28C-37229EEA1BAC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5FFE169A-C3EF-4CC7-ADC8-068F84298897}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5FFE169A-C3EF-4CC7-ADC8-068F84298897}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5FFE169A-C3EF-4CC7-ADC8-068F84298897}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5FFE169A-C3EF-4CC7-ADC8-068F84298897}.Release|Any CPU.Build.0 = Release|Any CPU
 		{54C592D1-D2DF-415B-9BF1-36A54095BFF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{54C592D1-D2DF-415B-9BF1-36A54095BFF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54C592D1-D2DF-415B-9BF1-36A54095BFF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -102,10 +77,10 @@ Global
 		{F0A6CE59-4AA1-4187-85FE-4BB8FE0FEA88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0A6CE59-4AA1-4187-85FE-4BB8FE0FEA88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F0A6CE59-4AA1-4187-85FE-4BB8FE0FEA88}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8D24E6DA-D5B9-5DAF-90D7-CC921AB502AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8D24E6DA-D5B9-5DAF-90D7-CC921AB502AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8D24E6DA-D5B9-5DAF-90D7-CC921AB502AB}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{8D24E6DA-D5B9-5DAF-90D7-CC921AB502AB}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{5C642145-EF1D-F62E-67B5-6CD61D70F22A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C642145-EF1D-F62E-67B5-6CD61D70F22A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C642145-EF1D-F62E-67B5-6CD61D70F22A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C642145-EF1D-F62E-67B5-6CD61D70F22A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -115,13 +90,12 @@ Global
 		{546E3DC3-8464-4FB7-993F-EAB35FD1E45E} = {9BC73413-EFCF-4833-B416-6E41DD6226EC}
 		{942DE7B0-51E4-4659-BD6A-25432745AA71} = {9BC73413-EFCF-4833-B416-6E41DD6226EC}
 		{939EFA45-3A34-4734-A28C-37229EEA1BAC} = {9A2B6CF1-0F20-41DA-8CDD-478AA9B5F010}
-		{5FFE169A-C3EF-4CC7-ADC8-068F84298897} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{54C592D1-D2DF-415B-9BF1-36A54095BFF4} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{66BFB2FE-F34E-479B-A7F1-A0FC399EDE46} = {98BB97F9-9958-4005-9887-58A1D84DADCC}
 		{8D6F5961-0317-4BE7-8BDC-57AB6B192C33} = {98BB97F9-9958-4005-9887-58A1D84DADCC}
 		{1615EEE4-D517-4C44-AA9B-591F02F4512F} = {0F69E1A2-FF14-42DF-B1A1-45E0736E9053}
 		{F0A6CE59-4AA1-4187-85FE-4BB8FE0FEA88} = {0F69E1A2-FF14-42DF-B1A1-45E0736E9053}
-		{8D24E6DA-D5B9-5DAF-90D7-CC921AB502AB} = {40E9E65F-D54D-44D2-867B-3F665D46D73B}
+		{5C642145-EF1D-F62E-67B5-6CD61D70F22A} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8D6B6087-BF85-48F2-8D9E-4F1D71F1A16B}
