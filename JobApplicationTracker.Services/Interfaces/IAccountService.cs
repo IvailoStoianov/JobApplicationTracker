@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace JobApplicationTracker.Services.Interfaces
 {
-    public interface IProfileService
+    public interface IAccountService
     {
+        Task<bool> RegisterAsync(JobApplicationTracker.API.Models.API.Request.RegisterRequestModel request);
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JobApplicationTracker.Data.Migrations
 {
     [DbContext(typeof(JobApplicationTrackerDbContext))]
-    [Migration("20250822094459_InitialCreate")]
+    [Migration("20250823115937_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -63,8 +63,13 @@ namespace JobApplicationTracker.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");

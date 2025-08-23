@@ -15,7 +15,11 @@ namespace JobApplicationTracker.Data.Models
 
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        [Required]
+        public byte[] PasswordSalt { get; set; }
 
+        [Required]
+        public byte[] PasswordHash { get; set; }
         public ICollection<Job> Jobs { get; set; } = new List<Job>();
     }
 }
