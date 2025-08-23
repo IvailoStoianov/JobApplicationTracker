@@ -37,16 +37,16 @@ namespace JobApplicationTracker.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("Register")]
-        public async Task<ActionResult<ApiResponse<string>>> Register(RegisterRequestModel request)
+        public async Task<ActionResult<ApiResponse<RegisterResponseModel>>> Register(RegisterRequestModel request)
         {
-            var created = await _accountService.RegisterAsync(request);
+            var result = await _accountService.RegisterAsync(request);
 
-            if (!created)
+            if (result == null)
             {
-                return BadRequest(ApiResponse<string>.Fail(ApiMessages.Auth.RegisterFailed));
+                return BadRequest(ApiResponse<RegisterResponseModel>.Fail(ApiMessages.Auth.RegisterFailed));
             }
 
-            return Ok(ApiResponse<string>.Ok(ApiMessages.Auth.RegisterSuccess));
+            return Ok(ApiResponse<RegisterResponseModel>.Ok(result, ApiMessages.Auth.RegisterSuccess));
         }
     }
 }

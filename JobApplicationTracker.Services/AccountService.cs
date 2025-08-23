@@ -1,4 +1,5 @@
 ﻿using JobApplicationTracker.API.Models.API.Request;
+using JobApplicationTracker.API.Models.API.Response;
 using JobApplicationTracker.Data.Models;
 using JobApplicationTracker.Data.Repository.Interfaces;
 using JobApplicationTracker.Services.Helpers;
@@ -15,23 +16,27 @@ namespace JobApplicationTracker.Services
             _userRepository = userRepository;
         }
 
-        public async Task<bool> RegisterAsync(RegisterRequestModel request)
+        public async Task<RegisterResponseModel?> RegisterAsync(RegisterRequestModel request)
         {
-            if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Password) || string.IsNullOrWhiteSpace(request.Username))
+            // Basic validation
+            if (string.IsNullOrWhiteSpace(request.Email) ||
+                string.IsNullOrWhiteSpace(request.Password) ||
+                string.IsNullOrWhiteSpace(request.Username))
             {
-                return false;
+                return null;
             }
 
+            // Check if user already exists by email or username
             var existingByEmail = await _userRepository.GetByEmailAsync(request.Email);
             if (existingByEmail != null)
             {
-                return false;
+                return null;
             }
 
             var existingByUsername = await _userRepository.GetByUsernameAsync(request.Username);
             if (existingByUsername != null)
             {
-                return false;
+                return null;
             }
 
             PasswordHelper.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
@@ -46,7 +51,11 @@ namespace JobApplicationTracker.Services
 
             await _userRepository.AddAsync(user);
 
-            return true;
+            return new RegisterResponseModel
+            {
+                UserId = user.Id.ToString(),
+                Email = user.Email
+            };
         }
     }
 }
