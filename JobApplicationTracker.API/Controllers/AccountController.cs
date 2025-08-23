@@ -1,4 +1,6 @@
-﻿using JobApplicationTracker.API.Models.API.Request;
+﻿using JobApplicationTracker.API.Infrastructure.Common;
+using JobApplicationTracker.API.Infrastructure.Common.Constants;
+using JobApplicationTracker.API.Models.API.Request;
 using JobApplicationTracker.API.Models.API.Response;
 using JobApplicationTracker.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -8,37 +10,43 @@ namespace JobApplicationTracker.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : Controller
+    public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
         private readonly IJwtService _jwtService;
-        public AccountController(IAccountService accountServic, IJwtService jwtService)
+
+        public AccountController(IAccountService accountService, IJwtService jwtService)
         {
-            _accountService = accountServic;
+            _accountService = accountService;
             _jwtService = jwtService;
         }
+
         [AllowAnonymous]
         [HttpPost("Login")]
-        public async Task<ActionResult<LoginResponseModel>> Login(LoginRequestModel request)
+        public async Task<ActionResult<ApiResponse<LoginResponseModel>>> Login(LoginRequestModel request)
         {
             var result = await _jwtService.Authenticate(request);
-            if(result == null)
+
+            if (result == null)
             {
-                return Unauthorized();
+                return Unauthorized(ApiResponse<LoginResponseModel>.Fail(ApiMessages.Auth.LoginFailed));
             }
-            return result;
+
+            return Ok(ApiResponse<LoginResponseModel>.Ok(result, ApiMessages.Auth.LoginSuccess));
         }
 
         [AllowAnonymous]
         [HttpPost("Register")]
-        public async Task<IActionResult> Register(RegisterRequestModel request)
+        public async Task<ActionResult<ApiResponse<string>>> Register(RegisterRequestModel request)
         {
             var created = await _accountService.RegisterAsync(request);
+
             if (!created)
             {
-                return BadRequest();
+                return BadRequest(ApiResponse<string>.Fail(ApiMessages.Auth.RegisterFailed));
             }
-            return Ok();
+
+            return Ok(ApiResponse<string>.Ok(ApiMessages.Auth.RegisterSuccess));
         }
     }
 }

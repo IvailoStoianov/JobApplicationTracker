@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JobApplicationTracker.API.Controllers
 {
-    [Authorize] 
+    [Authorize]
+    [ApiController]
     public class JobsController : Controller
     {
         private readonly IJobsService _jobsService;
