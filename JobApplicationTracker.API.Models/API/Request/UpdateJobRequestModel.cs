@@ -9,6 +9,8 @@ public class UpdateJobRequestModel
     public JobStatus Status { get; set; } = JobStatus.Applied;
     public DateTime ApplicationDate { get; set; } = DateTime.UtcNow;
     public string? Notes { get; set; }
+    public decimal? Salary { get; set; }
+    public string? Contact { get; set; }
 }
 
 

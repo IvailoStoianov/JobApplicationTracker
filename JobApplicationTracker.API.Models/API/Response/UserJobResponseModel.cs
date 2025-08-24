@@ -9,4 +9,6 @@ public class UserJobResponseModel
         public DateTime ApplicationDate { get; set; } = DateTime.UtcNow;
         public DateTime LastUpdated { get; set; } = DateTime.UtcNow;
         public string? Notes { get; set; }
+        public decimal? Salary { get; set; }
+        public string? Contact { get; set; }
 }

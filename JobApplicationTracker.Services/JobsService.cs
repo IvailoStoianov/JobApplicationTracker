@@ -50,7 +50,7 @@ namespace JobApplicationTracker.Services
 
             return new AllUsersJobsResponseModel
             {
-                Jobs = items.Select(j => new UserJobResponseModel { JobId = j.Id, Company = j.Company, Position = j.Position, Status = j.Status, ApplicationDate = j.ApplicationDate, LastUpdated = j.LastUpdated, Notes = j.Notes }).ToList(),
+                Jobs = items.Select(j => new UserJobResponseModel { JobId = j.Id, Company = j.Company, Position = j.Position, Status = j.Status, ApplicationDate = j.ApplicationDate, LastUpdated = j.LastUpdated, Notes = j.Notes, Salary = j.Salary, Contact = j.Contact }).ToList(),
                 Page = page,
                 PageSize = pageSize,
                 Total = total
@@ -59,10 +59,10 @@ namespace JobApplicationTracker.Services
 
         public async Task<UserJobResponseModel> CreateJob(JobRequestModel model, Guid userId)
         {
-            var job = new Job { Company = model.Company, Position = model.Position, Status = model.Status, ApplicationDate = model.ApplicationDate, Notes = model.Notes, ApplicationUserId = userId };
+            var job = new Job { Company = model.Company, Position = model.Position, Status = model.Status, ApplicationDate = model.ApplicationDate, Notes = model.Notes, Salary = model.Salary, Contact = model.Contact, ApplicationUserId = userId };
             job.LastUpdated = DateTime.UtcNow;
             await _jobRepository.AddAsync(job);
-            return new UserJobResponseModel { JobId = job.Id, Company = job.Company, Position = job.Position, Status = job.Status, ApplicationDate = job.ApplicationDate, Notes = job.Notes };
+            return new UserJobResponseModel { JobId = job.Id, Company = job.Company, Position = job.Position, Status = job.Status, ApplicationDate = job.ApplicationDate, LastUpdated = job.LastUpdated, Notes = job.Notes, Salary = job.Salary, Contact = job.Contact };
         }
 
         public async Task<UserJobResponseModel> UpdateJob(UpdateJobRequestModel model, Guid userId)
@@ -75,9 +75,11 @@ namespace JobApplicationTracker.Services
             job.Status = model.Status;
             job.ApplicationDate = model.ApplicationDate;
             job.Notes = model.Notes;
+            job.Salary = model.Salary;
+            job.Contact = model.Contact;
             job.LastUpdated = DateTime.UtcNow;
             await _jobRepository.UpdateAsync(job);
-            return new UserJobResponseModel { JobId = job.Id, Company = job.Company, Position = job.Position, Status = job.Status, ApplicationDate = job.ApplicationDate, Notes = job.Notes };
+            return new UserJobResponseModel { JobId = job.Id, Company = job.Company, Position = job.Position, Status = job.Status, ApplicationDate = job.ApplicationDate, LastUpdated = job.LastUpdated, Notes = job.Notes, Salary = job.Salary, Contact = job.Contact };
         }
 
         public async Task DeleteJob(Guid id, Guid userId)

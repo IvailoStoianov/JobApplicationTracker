@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using JobApplicationTracker.API.Infrastructure.Extentions;
 using JobApplicationTracker.API.Infrastructure.Common.Constants;
 using JobApplicationTracker.API.Infrastructure.Common;
+using JobApplicationTracker.Common.Enums;
 
 namespace JobApplicationTracker.API.Controllers
 {
@@ -18,6 +19,14 @@ namespace JobApplicationTracker.API.Controllers
             _jobsService = jobsService;
         }
         
+        [AllowAnonymous]
+        [HttpGet("Statuses")]
+        public ActionResult<ApiResponse<IEnumerable<string>>> GetStatuses()
+        {
+            var names = Enum.GetNames(typeof(JobStatus));
+            return Ok(ApiResponse<IEnumerable<string>>.Ok(names));
+        }
+
         [HttpGet("GetAllUserJobs")]
         public async Task<ActionResult<ApiResponse<AllUsersJobsResponseModel>>> GetAllUserJobs([FromQuery] GetUserJobsQuery query)
         {

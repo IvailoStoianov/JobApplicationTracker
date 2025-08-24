@@ -43,5 +43,11 @@ namespace JobApplicationTracker.Data.Models
 
         [MaxLength(JobConstants.NotesMaxLength)]
         public string? Notes { get; set; }
+
+        [Range(0, double.MaxValue)]
+        public decimal? Salary { get; set; }
+
+        [MaxLength(JobConstants.ContactMaxLength)]
+        public string? Contact { get; set; }
     }
 }

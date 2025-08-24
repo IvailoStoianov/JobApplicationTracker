@@ -4,6 +4,7 @@ using JobApplicationTracker.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JobApplicationTracker.Data.Migrations
 {
     [DbContext(typeof(JobApplicationTrackerDbContext))]
-    partial class JobApplicationTrackerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250824150429_AddedSalaryAndContactField")]
+    partial class AddedSalaryAndContactField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,7 +135,6 @@ namespace JobApplicationTracker.Data.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<decimal?>("Salary")
-                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Status")

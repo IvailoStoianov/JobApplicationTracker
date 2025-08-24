@@ -16,6 +16,9 @@ namespace JobApplicationTracker.Data.Configs
             builder.HasIndex(j => j.ApplicationUserId);
             builder.HasIndex(j => j.Status);
             builder.HasIndex(j => new { j.Company, j.Position });
+
+            // Decimal precision for Salary to avoid truncation warnings
+            builder.Property(j => j.Salary).HasPrecision(18, 2);
         }
     }
 }

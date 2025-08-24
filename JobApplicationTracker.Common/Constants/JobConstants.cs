@@ -11,5 +11,6 @@ namespace JobApplicationTracker.Common.Constants
         public const int CompanyMaxLength = 200;
         public const int PositionMaxLength = 200;
         public const int NotesMaxLength = 1000;
+        public const int ContactMaxLength = 200;
     }
 }
