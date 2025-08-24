@@ -3,9 +3,11 @@ import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './auth/AuthContext'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
-import JobsPage from './pages/JobsPage'
+import JobsPage from './pages/JobsPage.tsx'
+import ThemeToggle from './components/ThemeToggle'
+import type { ReactElement } from 'react'
 
-function ProtectedRoute({ children }: { children: JSX.Element }) {
+function ProtectedRoute({ children }: { children: ReactElement }) {
   const { isAuthenticated } = useAuth()
   if (!isAuthenticated) return <Navigate to="/login" replace />
   return children
@@ -15,6 +17,7 @@ export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <ThemeToggle />
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />

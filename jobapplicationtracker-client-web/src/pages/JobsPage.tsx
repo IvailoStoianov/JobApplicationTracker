@@ -14,6 +14,7 @@ export default function JobsPage() {
   const [statuses, setStatuses] = useState<string[]>([])
   const [showForm, setShowForm] = useState(false)
   const [editing, setEditing] = useState<UserJob | null>(null)
+  const [notesJob, setNotesJob] = useState<UserJob | null>(null)
 
   type JobForm = {
     company: string
@@ -117,92 +118,121 @@ export default function JobsPage() {
   }
 
   return (
-    <div style={{ maxWidth: 960, margin: '4vh auto', padding: 24 }}>
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+    <div>
+      <div className="toolbar">
         <h2 style={{ margin: 0 }}>My Applications</h2>
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-          <span style={{ fontSize: 14, opacity: 0.8 }}>{auth.email}</span>
-          <button onClick={onLogout}>Logout</button>
+          <span className="muted">{auth.email}</span>
+          <button className="btn" onClick={onLogout}>Logout</button>
         </div>
-      </header>
+      </div>
 
-      <section style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
-        <select value={status} onChange={e => setStatus(e.target.value)}>
-          <option value="">All statuses</option>
-          {statuses.map(s => (
-            <option key={s} value={s}>{s.replace(/([A-Z])/g, ' $1').trim()}</option>
-          ))}
-        </select>
-        <button onClick={openCreate}>Add Job</button>
-      </section>
+      <div className="container">
+        <section className="row" style={{ marginBottom: 16 }}>
+          <select className="input" value={status} onChange={e => setStatus(e.target.value)}>
+            <option value="">All statuses</option>
+            {statuses.map(s => (
+              <option key={s} value={s}>{s.replace(/([A-Z])/g, ' $1').trim()}</option>
+            ))}
+          </select>
+          <button className="btn primary" onClick={openCreate}>Add Job</button>
+        </section>
 
-      {showForm && (
-        <form onSubmit={submitForm} style={{ border: '1px solid #e5e5e5', padding: 16, borderRadius: 8, marginBottom: 16 }}>
-          <h3 style={{ marginTop: 0 }}>{editing ? 'Edit Job' : 'Add Job'}</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-            <input placeholder="Company" value={form.company} onChange={e => setForm(f => ({ ...f, company: e.target.value }))} required />
-            <input placeholder="Position" value={form.position} onChange={e => setForm(f => ({ ...f, position: e.target.value }))} required />
-            <select value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))}>
-              {statuses.map(s => (
-                <option key={s} value={s}>{s.replace(/([A-Z])/g, ' $1').trim()}</option>
-              ))}
-            </select>
-            <input type="date" value={form.applicationDate} onChange={e => setForm(f => ({ ...f, applicationDate: e.target.value }))} />
-            <input placeholder="Salary" type="number" min="0" step="0.01" value={form.salary ?? ''} onChange={e => setForm(f => ({ ...f, salary: e.target.value }))} />
-            <input placeholder="Contact" value={form.contact ?? ''} onChange={e => setForm(f => ({ ...f, contact: e.target.value }))} />
-            <textarea placeholder="Notes" style={{ gridColumn: '1 / -1' }} value={form.notes ?? ''} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} />
-          </div>
-          <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
-            <button type="submit">{editing ? 'Save Changes' : 'Create Job'}</button>
-            <button type="button" onClick={() => setShowForm(false)}>Cancel</button>
-          </div>
-        </form>
-      )}
+        {showForm && (
+          <form onSubmit={submitForm} style={{ marginBottom: 16 }}>
+            <h3 style={{ marginTop: 0 }}>{editing ? 'Edit Job' : 'Add Job'}</h3>
+            <div className="grid2">
+              <input className="input" placeholder="Company" value={form.company} onChange={e => setForm(f => ({ ...f, company: e.target.value }))} required />
+              <input className="input" placeholder="Position" value={form.position} onChange={e => setForm(f => ({ ...f, position: e.target.value }))} required />
+              <select className="input" value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))}>
+                {statuses.map(s => (
+                  <option key={s} value={s}>{s.replace(/([A-Z])/g, ' $1').trim()}</option>
+                ))}
+              </select>
+              <input className="input" type="date" value={form.applicationDate} onChange={e => setForm(f => ({ ...f, applicationDate: e.target.value }))} />
+              <input className="input" placeholder="Salary" type="number" min="0" step="0.01" value={form.salary ?? ''} onChange={e => setForm(f => ({ ...f, salary: e.target.value }))} />
+              <input className="input" placeholder="Contact" value={form.contact ?? ''} onChange={e => setForm(f => ({ ...f, contact: e.target.value }))} />
+              <textarea className="input" placeholder="Notes" style={{ gridColumn: '1 / -1' }} value={form.notes ?? ''} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} />
+            </div>
+            <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
+              <button className="btn primary" type="submit">{editing ? 'Save Changes' : 'Create Job'}</button>
+              <button className="btn" type="button" onClick={() => setShowForm(false)}>Cancel</button>
+            </div>
+          </form>
+        )}
 
-      {loading && <div>Loading...</div>}
-      {error && <div style={{ color: 'crimson' }}>{error}</div>}
+        {loading && <div>Loading...</div>}
+        {error && <div style={{ color: 'crimson' }}>{error}</div>}
 
-      {!loading && !error && data && (
-        <>
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <thead>
-              <tr>
-                <th style={{ textAlign: 'left', padding: 8, borderBottom: '1px solid #ddd' }}>Company</th>
-                <th style={{ textAlign: 'left', padding: 8, borderBottom: '1px solid #ddd' }}>Position</th>
-                <th style={{ textAlign: 'left', padding: 8, borderBottom: '1px solid #ddd' }}>Status</th>
-                <th style={{ textAlign: 'left', padding: 8, borderBottom: '1px solid #ddd' }}>Applied</th>
-                <th style={{ textAlign: 'left', padding: 8, borderBottom: '1px solid #ddd' }}>Salary</th>
-                <th style={{ textAlign: 'left', padding: 8, borderBottom: '1px solid #ddd' }}>Contact</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.jobs.map((j: UserJob) => (
-                <tr key={j.jobId} onDoubleClick={() => openEdit(j)}>
-                  <td style={{ padding: 8, borderBottom: '1px solid #f0f0f0' }}>{j.company}</td>
-                  <td style={{ padding: 8, borderBottom: '1px solid #f0f0f0' }}>{j.position}</td>
-                  <td style={{ padding: 8, borderBottom: '1px solid #f0f0f0' }}>{j.status}</td>
-                  <td style={{ padding: 8, borderBottom: '1px solid #f0f0f0' }}>{new Date(j.applicationDate).toLocaleDateString()}</td>
-                  <td style={{ padding: 8, borderBottom: '1px solid #f0f0f0' }}>{j.salary ?? '-'}</td>
-                  <td style={{ padding: 8, borderBottom: '1px solid #f0f0f0' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
-                      <span>{j.contact ?? '-'}</span>
-                      <span>
-                        <button onClick={() => openEdit(j)}>Edit</button>
-                        <button onClick={() => onDelete(j)} style={{ marginLeft: 6 }}>Delete</button>
-                      </span>
-                    </div>
-                  </td>
+        {!loading && !error && data && (
+          <>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Company</th>
+                  <th>Position</th>
+                  <th>Status</th>
+                  <th>Applied</th>
+                  <th>Salary</th>
+                  <th>Contact</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {data.jobs.map((j: UserJob) => (
+                  <tr key={j.jobId} onDoubleClick={() => openEdit(j)}>
+                    <td>{j.company}</td>
+                    <td>{j.position}</td>
+                    <td>
+                      <span className={`badge ${j.status === 'Applied' ? 'blue' : j.status === 'InterviewScheduled' ? 'indigo' : j.status === 'InterviewCompleted' ? 'green' : j.status === 'OfferReceived' ? 'amber' : j.status === 'Rejected' ? 'red' : 'gray'}`}>
+                        {String(j.status).replace(/([A-Z])/g, ' $1').trim()}
+                      </span>
+                    </td>
+                    <td>{new Date(j.applicationDate).toLocaleDateString()}</td>
+                    <td>{j.salary ?? '-'}</td>
+                    <td>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
+                        <span>{j.contact ?? '-'}</span>
+                        <span>
+                          <button className="btn" onClick={() => openEdit(j)}>Edit</button>
+                          <button className="btn danger" onClick={() => onDelete(j)} style={{ marginLeft: 6 }}>Delete</button>
+                          <button className="btn" onClick={() => setNotesJob(j)} style={{ marginLeft: 6 }}>View Notes</button>
+                        </span>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
 
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 12 }}>
-            <button disabled={page <= 1} onClick={() => setPage(p => Math.max(1, p - 1))}>Prev</button>
-            <span style={{ alignSelf: 'center' }}>Page {data.page} / {Math.max(1, Math.ceil(data.total / data.pageSize))}</span>
-            <button disabled={data.page * data.pageSize >= data.total} onClick={() => setPage(p => p + 1)}>Next</button>
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, marginTop: 12 }}>
+              <div className="muted">Total: {data.total}</div>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button className="btn" disabled={page <= 1} onClick={() => setPage(p => Math.max(1, p - 1))}>Prev</button>
+                <span className="muted" style={{ alignSelf: 'center' }}>Page {data.page} / {Math.max(1, Math.ceil(data.total / data.pageSize))}</span>
+                <button className="btn" disabled={data.page * data.pageSize >= data.total} onClick={() => setPage(p => p + 1)}>Next</button>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+
+      {notesJob && (
+        <div className="modalBackdrop" onClick={() => setNotesJob(null)}>
+          <div className="modal" onClick={e => e.stopPropagation()}>
+            <div className="toolbar">
+              <h3 style={{ margin: 0 }}>Notes - {notesJob.company}</h3>
+              <button className="btn" onClick={() => setNotesJob(null)}>Close</button>
+            </div>
+            <div className="grid1">
+              <div className="muted">Position: {notesJob.position}</div>
+              <div className="muted">Status: {String(notesJob.status).replace(/([A-Z])/g, ' $1').trim()}</div>
+              <div className="muted">Applied: {new Date(notesJob.applicationDate).toLocaleString()}</div>
+              <div style={{ whiteSpace: 'pre-wrap', background: '#0b1220', border: '1px solid #1f2937', borderRadius: 8, padding: 12 }}>
+                {notesJob.notes ? notesJob.notes : 'No notes added.'}
+              </div>
+            </div>
           </div>
-        </>
+        </div>
       )}
     </div>
   )
