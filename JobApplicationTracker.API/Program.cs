@@ -28,6 +28,7 @@ namespace JobApplicationTracker.API
 
             builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IJobRepository, JobRepository>();
             builder.Services.RegisterUserDefinedServices(typeof(IJobsService).Assembly);
             
             //Swagger

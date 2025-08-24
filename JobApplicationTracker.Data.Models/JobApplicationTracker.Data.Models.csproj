@@ -14,4 +14,8 @@
     <ProjectReference Include="..\JobApplicationTracker.Common\JobApplicationTracker.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Constants\Messages\" />
+  </ItemGroup>
+
 </Project>

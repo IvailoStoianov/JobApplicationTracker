@@ -18,8 +18,13 @@ namespace JobApplicationTracker.API.Infrastructure.Common.Constants
         
         public static class Jobs
         {
-            public const string JobNotFound = "Job not found";
+            public const string JobsFetched = "Jobs fetched successfully";
             public const string JobCreated = "Job created successfully";
+            public const string JobUpdated = "Job updated successfully";
+            public const string JobDeleted = "Job deleted successfully";
+            public const string JobNotFound = "Job not found";
+            public const string Unauthorized = "Unauthorized";
+            public const string Forbidden = "Forbidden";
         }
         
     }

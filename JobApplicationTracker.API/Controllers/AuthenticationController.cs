@@ -10,12 +10,12 @@ namespace JobApplicationTracker.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AuthenticationController : ControllerBase
     {
         private readonly IAccountService _accountService;
         private readonly IJwtService _jwtService;
 
-        public AccountController(IAccountService accountService, IJwtService jwtService)
+        public AuthenticationController(IAccountService accountService, IJwtService jwtService)
         {
             _accountService = accountService;
             _jwtService = jwtService;

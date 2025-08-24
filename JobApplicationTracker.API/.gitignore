@@ -1,0 +1,23 @@
+# Build outputs
+bin/
+obj/
+
+# IDE / tooling
+.vs/
+.vscode/
+
+# Test results
+TestResults/
+
+# User-specific files
+*.user
+*.suo
+*.userprefs
+
+# Packages and caches
+packages/
+*.nupkg
+
+# OS files
+.DS_Store
+Thumbs.db

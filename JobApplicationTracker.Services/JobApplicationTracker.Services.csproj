@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\JobApplicationTracker.API.Infrastructure\JobApplicationTracker.API.Infrastructure.csproj" />
     <ProjectReference Include="..\JobApplicationTracker.API.Models\JobApplicationTracker.API.Models.csproj" />
     <ProjectReference Include="..\JobApplicationTracker.Data\JobApplicationTracker.Data.csproj" />
   </ItemGroup>

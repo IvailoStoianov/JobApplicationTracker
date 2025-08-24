@@ -12,8 +12,13 @@ namespace JobApplicationTracker.Data.Models
 {
     public class Job
     {
+        public Job()
+        {
+            this.Id = Guid.NewGuid();
+        }
+
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         public Guid ApplicationUserId { get; set; }
@@ -38,8 +43,5 @@ namespace JobApplicationTracker.Data.Models
 
         [MaxLength(JobConstants.NotesMaxLength)]
         public string? Notes { get; set; }
-
-        public ICollection<Interview> Interviews { get; set; } = new List<Interview>();
-        public ICollection<Attachment> Attachments { get; set; } = new List<Attachment>();
     }
 }

@@ -10,5 +10,7 @@ namespace JobApplicationTracker.Common.Constants
     {
         public const int UserNameMaxLength = 100;
         public const int EmailMaxLength = 200;
+        public const int PasswordMinLength = 8;
+        public const int PasswordMaxLength = 50;
     }
 }

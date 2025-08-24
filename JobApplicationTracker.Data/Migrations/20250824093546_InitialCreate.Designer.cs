@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JobApplicationTracker.Data.Migrations
 {
     [DbContext(typeof(JobApplicationTrackerDbContext))]
-    [Migration("20250823115937_InitialCreate")]
+    [Migration("20250824093546_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -101,75 +101,11 @@ namespace JobApplicationTracker.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("JobApplicationTracker.Data.Models.Attachment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("FilePath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("JobId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UploadedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("JobId");
-
-                    b.HasIndex("JobId", "FileName");
-
-                    b.ToTable("Attachments");
-                });
-
-            modelBuilder.Entity("JobApplicationTracker.Data.Models.Interview", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("JobId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Notes")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Date");
-
-                    b.HasIndex("JobId");
-
-                    b.ToTable("Interviews");
-                });
-
             modelBuilder.Entity("JobApplicationTracker.Data.Models.Job", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("ApplicationDate")
                         .HasColumnType("datetime2");
@@ -339,28 +275,6 @@ namespace JobApplicationTracker.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("JobApplicationTracker.Data.Models.Attachment", b =>
-                {
-                    b.HasOne("JobApplicationTracker.Data.Models.Job", "Job")
-                        .WithMany("Attachments")
-                        .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Job");
-                });
-
-            modelBuilder.Entity("JobApplicationTracker.Data.Models.Interview", b =>
-                {
-                    b.HasOne("JobApplicationTracker.Data.Models.Job", "Job")
-                        .WithMany("Interviews")
-                        .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Job");
-                });
-
             modelBuilder.Entity("JobApplicationTracker.Data.Models.Job", b =>
                 {
                     b.HasOne("JobApplicationTracker.Data.Models.ApplicationUser", "User")
@@ -426,13 +340,6 @@ namespace JobApplicationTracker.Data.Migrations
             modelBuilder.Entity("JobApplicationTracker.Data.Models.ApplicationUser", b =>
                 {
                     b.Navigation("Jobs");
-                });
-
-            modelBuilder.Entity("JobApplicationTracker.Data.Models.Job", b =>
-                {
-                    b.Navigation("Attachments");
-
-                    b.Navigation("Interviews");
                 });
 #pragma warning restore 612, 618
         }

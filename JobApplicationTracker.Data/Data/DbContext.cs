@@ -24,15 +24,11 @@ namespace JobApplicationTracker.Data.Data
             //Applying Configurations
             modelBuilder.ApplyConfiguration(new ApplicationUserConfiguration());
             modelBuilder.ApplyConfiguration(new JobConfiguration());
-            modelBuilder.ApplyConfiguration(new InterviewConfiguration());
-            modelBuilder.ApplyConfiguration(new AttachmentConfiguration());
             
             //Seeding the data
             SeedDataConfiguration.ApplySeedData(modelBuilder);
 
         }
         public DbSet<Job> Jobs { get; set; }
-        public DbSet<Interview> Interviews { get; set; }
-        public DbSet<Attachment> Attachments { get; set; }
     }
 }

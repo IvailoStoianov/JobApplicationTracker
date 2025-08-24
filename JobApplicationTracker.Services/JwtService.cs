@@ -44,7 +44,8 @@ namespace JobApplicationTracker.Services
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(JwtRegisteredClaimNames.Email, request.Email)
+                    new Claim(JwtRegisteredClaimNames.Email, request.Email),
+                    new Claim(ClaimTypes.NameIdentifier, userAccount.Id.ToString())
                 }),
                 Expires = tokenExpiryTimeStamp,
                 Issuer = issuer,
