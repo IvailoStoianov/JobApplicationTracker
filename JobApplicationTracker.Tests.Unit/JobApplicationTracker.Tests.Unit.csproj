@@ -14,6 +14,15 @@
     <PackageReference Include="NUnit" Version="4.2.2" />
     <PackageReference Include="NUnit.Analyzers" Version="4.4.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
+    <PackageReference Include="Moq" Version="4.20.72" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\JobApplicationTracker.Common\JobApplicationTracker.Common.csproj" />
+    <ProjectReference Include="..\JobApplicationTracker.Services\JobApplicationTracker.Services.csproj" />
+    <ProjectReference Include="..\JobApplicationTracker.API.Models\JobApplicationTracker.API.Models.csproj" />
+    <ProjectReference Include="..\JobApplicationTracker.Data\JobApplicationTracker.Data.csproj" />
+    <ProjectReference Include="..\JobApplicationTracker.API.Infrastructure\JobApplicationTracker.API.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
