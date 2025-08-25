@@ -4,7 +4,6 @@ import { AuthProvider, useAuth } from './auth/AuthContext'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import JobsPage from './pages/JobsPage.tsx'
-import ThemeToggle from './components/ThemeToggle'
 import type { ReactElement } from 'react'
 
 function ProtectedRoute({ children }: { children: ReactElement }) {
@@ -17,7 +16,6 @@ export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <ThemeToggle />
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />

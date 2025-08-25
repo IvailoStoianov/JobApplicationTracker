@@ -105,9 +105,13 @@ button:focus-visible {
 .btn.ghost { background: transparent; border-color: var(--border); }
 .table { width: 100%; border-collapse: collapse; font-size: 14px; }
 .table th, .table td { text-align: left; padding: 12px; border-bottom: 1px solid var(--border); }
+.table th, .table td { border-right: 1px solid var(--border); }
+.table th:last-child, .table td:last-child { border-right: none; }
 .table tbody tr:hover { background: rgba(148,163,184,.06); }
 .table thead th { position: sticky; top: 0; background: var(--card); z-index: 1; }
+.tableWrap { width: 100%; overflow-x: auto; }
 .table thead th { color: var(--muted); font-weight: 600; }
+.cellLabel { display: none; color: var(--muted); font-size: 12px; margin-right: 12px; }
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .grid1 { display: grid; gap: 12px; }
 input, select, textarea { background: var(--bg-accent); color: var(--text); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; }
@@ -126,8 +130,25 @@ textarea { min-height: 120px; }
 .badge.red { border-color: #7f1d1d; background: rgba(239,68,68,.12); color: #fecaca; }
 .badge.gray { border-color: #334155; background: rgba(148,163,184,.12); color: #cbd5e1; }
 
-.modalBackdrop { position: fixed; inset: 0; background: rgba(0,0,0,.6); display: flex; align-items: center; justify-content: center; }
-.modal { background: var(--card); border: 1px solid var(--border); border-radius: 12px; width: min(720px, 92vw); padding: 16px; box-shadow: 0 20px 60px rgba(0,0,0,.35); }
+.modalBackdrop { position: fixed; inset: 0; background: rgba(0,0,0,.6); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.modal { background: var(--card); border: 1px solid var(--border); border-radius: 12px; width: min(720px, 92vw); padding: 16px; box-shadow: 0 20px 60px rgba(0,0,0,.35); z-index: 1001; }
+@media (max-width: 640px) {
+  .grid2 { grid-template-columns: 1fr; }
+  .table thead { display: none; }
+  .table tbody tr { display: block; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 12px; overflow: hidden; }
+  .table tbody tr td { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-right: none; }
+  .table tbody tr td:last-child { border-bottom: none; }
+  .cellLabel { display: inline-block; }
+  .actions { display: flex; gap: 8px; width: 100%; }
+  .actions .btn { flex: 1; text-align: center; }
+  /* Move theme switch into flow to avoid overlapping toolbar buttons */
+  .themeSwitch { position: static; margin: 8px 0; }
+}
+
+@media (min-width: 641px) {
+  .actions { display: inline-flex; gap: 10px; }
+  .actions .btn { min-width: 90px; }
+}
 
 /* Animations */
 .fade-in { animation: fadeIn .35s ease both; }

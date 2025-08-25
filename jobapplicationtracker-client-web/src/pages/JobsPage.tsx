@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useApi } from '../api/client'
 import type { JobsList, UserJob } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
+import ThemeToggle from '../components/ThemeToggle'
 
 export default function JobsPage() {
   const { request } = useApi()
@@ -15,6 +16,21 @@ export default function JobsPage() {
   const [showForm, setShowForm] = useState(false)
   const [editing, setEditing] = useState<UserJob | null>(null)
   const [notesJob, setNotesJob] = useState<UserJob | null>(null)
+  const [currency, setCurrency] = useState<string>(() => localStorage.getItem('jat.currency') || 'USD')
+
+  useEffect(() => {
+    localStorage.setItem('jat.currency', currency)
+  }, [currency])
+
+  function formatCurrency(value?: number | null) {
+    if (value == null) return '-'
+    try {
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: (currency as any), maximumFractionDigits: 0 }).format(value)
+    } catch {
+      const symbol = currency === 'EUR' ? '€' : currency === 'GBP' ? '£' : currency === 'BGN' ? 'лв' : '$'
+      return `${symbol}${value}`
+    }
+  }
 
   type JobForm = {
     company: string
@@ -119,11 +135,14 @@ export default function JobsPage() {
 
   return (
     <div>
-      <div className="toolbar">
-        <h2 style={{ margin: 0 }}>My Applications</h2>
+      <div className="toolbar" style={{ flexWrap: 'wrap', gap: 8 }}>
+        <h2 style={{ margin: 0 }}>Job Application Tracker</h2>
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
           <span className="muted">{auth.email}</span>
           <button className="btn" onClick={onLogout}>Logout</button>
+        </div>
+        <div style={{ marginLeft: 'auto' }}>
+          <ThemeToggle />
         </div>
       </div>
 
@@ -134,6 +153,12 @@ export default function JobsPage() {
             {statuses.map(s => (
               <option key={s} value={s}>{s.replace(/([A-Z])/g, ' $1').trim()}</option>
             ))}
+          </select>
+          <select className="input" value={currency} onChange={e => setCurrency(e.target.value)} title="Currency">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+            <option value="BGN">BGN</option>
           </select>
           <button className="btn primary" onClick={openCreate}>Add Job</button>
         </section>
@@ -166,6 +191,7 @@ export default function JobsPage() {
 
         {!loading && !error && data && (
           <>
+            <div className="tableWrap">
             <table className="table">
               <thead>
                 <tr>
@@ -180,29 +206,29 @@ export default function JobsPage() {
               <tbody>
                 {data.jobs.map((j: UserJob) => (
                   <tr key={j.jobId} onDoubleClick={() => openEdit(j)}>
-                    <td>{j.company}</td>
-                    <td>{j.position}</td>
+                    <td><span className="cellLabel">Company</span>{j.company}</td>
+                    <td><span className="cellLabel">Position</span>{j.position}</td>
                     <td>
+                      <span className="cellLabel">Status</span>
                       <span className={`badge ${j.status === 'Applied' ? 'blue' : j.status === 'InterviewScheduled' ? 'indigo' : j.status === 'InterviewCompleted' ? 'green' : j.status === 'OfferReceived' ? 'amber' : j.status === 'Rejected' ? 'red' : 'gray'}`}>
                         {String(j.status).replace(/([A-Z])/g, ' $1').trim()}
                       </span>
                     </td>
-                    <td>{new Date(j.applicationDate).toLocaleDateString()}</td>
-                    <td>{j.salary ?? '-'}</td>
+                    <td><span className="cellLabel">Applied</span>{new Date(j.applicationDate).toLocaleDateString()}</td>
+                    <td><span className="cellLabel">Salary</span>{formatCurrency(j.salary as number)}</td>
                     <td>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
-                        <span>{j.contact ?? '-'}</span>
-                        <span>
-                          <button className="btn" onClick={() => openEdit(j)}>Edit</button>
-                          <button className="btn danger" onClick={() => onDelete(j)} style={{ marginLeft: 6 }}>Delete</button>
-                          <button className="btn" onClick={() => setNotesJob(j)} style={{ marginLeft: 6 }}>View Notes</button>
-                        </span>
+                      <span className="cellLabel">Actions</span>
+                      <div className="actions">
+                        <button className="btn" onClick={() => openEdit(j)}>Edit</button>
+                        <button className="btn danger" onClick={() => onDelete(j)}>Delete</button>
+                        <button className="btn" onClick={() => setNotesJob(j)}>View Notes</button>
                       </div>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+            </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, marginTop: 12 }}>
               <div className="muted">Total: {data.total}</div>
