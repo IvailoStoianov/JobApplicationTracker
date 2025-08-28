@@ -26,9 +26,6 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 COPY --from=build /app/out ./
 
-# Bind to the PORT Render provides
-ENV ASPNETCORE_URLS=http://+:${PORT}
-
 ENTRYPOINT ["dotnet", "JobApplicationTracker.API.dll"]
 
 
