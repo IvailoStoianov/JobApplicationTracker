@@ -13,22 +13,29 @@ export default function RegisterPage() {
   const [passwordHint, setPasswordHint] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
+  const API_BASE = (import.meta as any)?.env?.VITE_API_BASE_URL || ''
+
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
     setError(null)
     setPasswordHint(null)
     try {
-      const res = await fetch('/api/Authentication/Register', {
+      const url = API_BASE ? new URL('/api/Authentication/Register', API_BASE).toString() : '/api/Authentication/Register'
+      const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password, confirmPassword }),
       })
-      const json = await res.json()
-      if (!res.ok || !json?.success) {
-        // Show backend message if provided
-        const msg = json?.message || 'Registration failed'
-        // If password fails complexity, provide client-side hint too
+
+      // Safely parse JSON if available
+      const isJson = (res.headers.get('content-type') || '').includes('application/json')
+      const payload = isJson ? await res.json() : null
+
+      if (!res.ok || !payload?.success) {
+        const backendMsg = payload?.message
+        const fallback = !isJson ? `Unexpected response (status ${res.status})` : 'Registration failed'
+        const msg = backendMsg || fallback
         setPasswordHint('Password must be 8-50 chars and include uppercase, lowercase, number, and symbol.')
         throw new Error(msg)
       }
