@@ -1,5 +1,6 @@
 
 using JobApplicationTracker.Data.Models;
+using JobApplicationTracker.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using JobApplicationTracker.API.Infrastructure.Extentions;
 using JobApplicationTracker.Services.Interfaces;
@@ -87,6 +88,13 @@ namespace JobApplicationTracker.API
             builder.Services.AddAuthorization();
 
             var app = builder.Build();
+
+            // Apply pending migrations automatically on startup (ensures DB schema exists)
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<JobApplicationTrackerDbContext>();
+                db.Database.Migrate();
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
