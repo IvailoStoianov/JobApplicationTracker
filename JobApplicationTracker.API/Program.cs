@@ -25,6 +25,8 @@ namespace JobApplicationTracker.API
 
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            // Convert postgres:// URL to Npgsql key/value if needed
+            connectionString = ConvertPostgresUrlToNpgsql(connectionString);
             // Log provider-only hint to verify binding (do not print the full connection string)
             Console.WriteLine($"DB configured: {(string.IsNullOrWhiteSpace(connectionString) ? "NO" : "YES")}");
             //PostgreSQL
@@ -130,6 +132,51 @@ namespace JobApplicationTracker.API
             app.MapControllers();
 
             app.Run();
+        }
+
+        private static string ConvertPostgresUrlToNpgsql(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input)) return input;
+            var trimmed = input.Trim();
+            if (!(trimmed.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase)
+                  || trimmed.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase)))
+            {
+                return input;
+            }
+
+            try
+            {
+                var uri = new Uri(trimmed);
+                var userInfo = uri.UserInfo.Split(':');
+                var username = userInfo.Length > 0 ? Uri.UnescapeDataString(userInfo[0]) : string.Empty;
+                var password = userInfo.Length > 1 ? Uri.UnescapeDataString(userInfo[1]) : string.Empty;
+                var host = uri.Host;
+                var port = uri.Port > 0 ? uri.Port : 5432;
+                var database = uri.AbsolutePath.Trim('/');
+
+                // Parse query for sslmode (simple parser)
+                var sslMode = "Require"; // default for Render
+                var query = uri.Query; // starts with '?'
+                if (!string.IsNullOrEmpty(query))
+                {
+                    var q = query.TrimStart('?').Split('&', StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var kv in q)
+                    {
+                        var parts = kv.Split('=', 2);
+                        if (parts.Length == 2 && parts[0].Equals("sslmode", StringComparison.OrdinalIgnoreCase))
+                        {
+                            sslMode = Uri.UnescapeDataString(parts[1]);
+                        }
+                    }
+                }
+
+                var kvp = $"Host={host};Port={port};Database={database};Username={username};Password={password};SSL Mode={sslMode};Trust Server Certificate=true";
+                return kvp;
+            }
+            catch
+            {
+                return input;
+            }
         }
     }
 }
