@@ -18,8 +18,15 @@ namespace JobApplicationTracker.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Basic diagnostics for env/config loading (non-sensitive)
+            var envName = builder.Environment.EnvironmentName;
+            Console.WriteLine($"Environment: {envName}");
+
+
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            // Log provider-only hint to verify binding (do not print the full connection string)
+            Console.WriteLine($"DB configured: {(string.IsNullOrWhiteSpace(connectionString) ? "NO" : "YES")}");
             //PostgreSQL
             builder.Services.AddDbContext<JobApplicationTracker.Data.Data.JobApplicationTrackerDbContext>(options =>
                 options.UseNpgsql(connectionString));
@@ -92,8 +99,18 @@ namespace JobApplicationTracker.API
             // Apply pending migrations automatically on startup (ensures DB schema exists)
             using (var scope = app.Services.CreateScope())
             {
-                var db = scope.ServiceProvider.GetRequiredService<JobApplicationTrackerDbContext>();
-                db.Database.Migrate();
+                try
+                {
+                    var db = scope.ServiceProvider.GetRequiredService<JobApplicationTrackerDbContext>();
+                    Console.WriteLine("Applying EF Core migrations...");
+                    db.Database.Migrate();
+                    Console.WriteLine("EF Core migrations applied.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Migration error: {ex.Message}");
+                    throw;
+                }
             }
 
             // Configure the HTTP request pipeline.
