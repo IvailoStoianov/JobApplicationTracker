@@ -33,6 +33,21 @@ namespace JobApplicationTracker.API
             builder.Services.AddDbContext<JobApplicationTracker.Data.Data.JobApplicationTrackerDbContext>(options =>
                 options.UseNpgsql(connectionString));
             
+            // CORS for frontend
+            var frontendOrigin = builder.Configuration["FRONTEND_ORIGIN"];
+            if (!string.IsNullOrWhiteSpace(frontendOrigin))
+            {
+                builder.Services.AddCors(options =>
+                {
+                    options.AddPolicy("frontend", policy =>
+                    {
+                        policy.WithOrigins(frontendOrigin)
+                              .AllowAnyHeader()
+                              .AllowAnyMethod();
+                    });
+                });
+            }
+
             builder.Services.AddControllers()
                 .AddJsonOptions(options =>
                 {
@@ -124,6 +139,11 @@ namespace JobApplicationTracker.API
             }
 
             app.UseHttpsRedirection();
+
+            if (!string.IsNullOrWhiteSpace(frontendOrigin))
+            {
+                app.UseCors("frontend");
+            }
 
             app.UseAuthentication();
             app.UseAuthorization();

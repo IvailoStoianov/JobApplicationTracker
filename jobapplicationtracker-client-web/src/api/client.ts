@@ -3,9 +3,11 @@ import { useCallback } from 'react'
 
 export function useApi() {
   const { auth } = useAuth()
+  const API_BASE = (import.meta as any)?.env?.VITE_API_BASE_URL || ''
 
   const request = useCallback(async function request<T>(path: string, init?: RequestInit): Promise<T> {
-    const res = await fetch(path, {
+    const url = API_BASE ? new URL(path, API_BASE).toString() : path
+    const res = await fetch(url, {
       ...init,
       headers: {
         'Content-Type': 'application/json',

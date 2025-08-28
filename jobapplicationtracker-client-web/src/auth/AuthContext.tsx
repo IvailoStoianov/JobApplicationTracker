@@ -28,12 +28,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     else localStorage.removeItem('jat.email')
   }, [auth])
 
+  const API_BASE = (import.meta as any)?.env?.VITE_API_BASE_URL || ''
+
   const value = useMemo<AuthContextValue>(() => ({
     isAuthenticated: !!auth.accessToken,
     auth,
     login: async (email: string, password: string) => {
       try {
-        const res = await fetch('/api/Authentication/Login', {
+        const url = API_BASE ? new URL('/api/Authentication/Login', API_BASE).toString() : '/api/Authentication/Login'
+        const res = await fetch(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
