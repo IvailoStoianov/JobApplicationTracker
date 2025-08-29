@@ -50,6 +50,9 @@ export default function RegisterPage() {
   return (
     <div style={{ maxWidth: 420, margin: '10vh auto', padding: 24 }}>
       <h2 style={{ marginBottom: 16 }}>Create your account</h2>
+      <div className="muted" style={{ marginBottom: 12 }}>
+        Heads up: this personal project runs on free-tier resources and may start cold; the first request can take a few seconds.
+      </div>
       <form onSubmit={onSubmit} autoComplete="off">
         <div style={{ display: 'grid', gap: 12 }}>
           <input className="input" placeholder="Username" name="username" autoComplete="username" value={username} onChange={e => setUsername(e.target.value)} required />

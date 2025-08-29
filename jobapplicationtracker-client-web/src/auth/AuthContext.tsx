@@ -8,7 +8,7 @@ type AuthState = {
 type AuthContextValue = {
   isAuthenticated: boolean
   auth: AuthState
-  login: (email: string, password: string) => Promise<boolean>
+  login: (email: string, password: string) => Promise<{ ok: boolean; message?: string }>
   logout: () => void
 }
 
@@ -41,13 +41,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
         })
-        const json = await res.json()
-        if (!res.ok || !json?.success) return false
+        const isJson = (res.headers.get('content-type') || '').includes('application/json')
+        const json = isJson ? await res.json() : null
+        if (!res.ok || !json?.success) {
+          const message = json?.message || (isJson ? 'Invalid email or password' : `Unexpected response (status ${res.status})`)
+          return { ok: false, message }
+        }
         const data = json.data as { accessToken: string; email: string }
         setAuth({ accessToken: data.accessToken, email: data.email })
-        return true
-      } catch {
-        return false
+        return { ok: true }
+      } catch (err: any) {
+        return { ok: false, message: err?.message || 'Login failed' }
       }
     },
     logout: () => setAuth({ accessToken: null, email: null }),

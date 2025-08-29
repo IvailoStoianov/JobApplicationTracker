@@ -17,11 +17,11 @@ export default function LoginPage() {
     setLoading(true)
     setError(null)
     setPasswordHint(null)
-    const ok = await login(email, password)
+    const res = await login(email, password)
     setLoading(false)
-    if (ok) nav('/')
+    if (res.ok) nav('/')
     else {
-      setError('Invalid email or password')
+      setError(res.message || 'Invalid email or password')
       setPasswordHint('Tip: Passwords must include uppercase, lowercase, number, and symbol.')
     }
   }
@@ -29,6 +29,9 @@ export default function LoginPage() {
   return (
     <div style={{ maxWidth: 420, margin: '10vh auto', padding: 24 }}>
       <h2 style={{ marginBottom: 16 }}>Job Tracker - Login</h2>
+      <div className="muted" style={{ marginBottom: 12 }}>
+        Heads up: this personal project runs on free-tier resources and may start cold; the first request can take a few seconds.
+      </div>
       <form onSubmit={onSubmit} autoComplete="off">
         <div style={{ display: 'grid', gap: 12 }}>
           <input className="input" placeholder="Email" name="email" autoComplete="email" type="email" value={email} onChange={e => setEmail(e.target.value)} required />
