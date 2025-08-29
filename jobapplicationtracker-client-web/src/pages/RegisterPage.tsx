@@ -34,7 +34,7 @@ export default function RegisterPage() {
 
       if (!res.ok || !payload?.success) {
         const backendMsg = payload?.message
-        const fallback = !isJson ? `Unexpected response (status ${res.status})` : 'Registration failed'
+        const fallback = !isJson ? 'Registration failed. Please try again.' : 'Registration failed'
         const msg = backendMsg || fallback
         setPasswordHint('Password must be 8-50 chars and include uppercase, lowercase, number, and symbol.')
         throw new Error(msg)

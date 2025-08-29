@@ -44,7 +44,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const isJson = (res.headers.get('content-type') || '').includes('application/json')
         const json = isJson ? await res.json() : null
         if (!res.ok || !json?.success) {
-          const message = json?.message || (isJson ? 'Invalid email or password' : `Unexpected response (status ${res.status})`)
+          const message = json?.message || (isJson ? 'Invalid email or password' : 'Login failed. Please try again.')
           return { ok: false, message }
         }
         const data = json.data as { accessToken: string; email: string }
